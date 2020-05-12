@@ -1,0 +1,22 @@
+---
+
+- hosts: all
+  remote_user: root
+  vars:
+    # Senha que o usuário vai utilizar: 7zhJZos78pEnqNUPDN
+    # Você não pode colocar uma senha de texto sem formatação no Ansible. Em vez disso, você precisa gerar um!
+    # executar: mkpasswd --method=sha-512 
+    # apos digitar o comando acima, uma senha sera solicitada e sera gerada uma uma string de senha que vamos passar no Ansible
+    
+    password: '$6$ZZ5mPeQkN0$KFrFmafM0rfrq8MCaDZwI1vurPrOZD6g8TS8LsY1aRZUIvV0S5QL0jnIttKHjx4usVZ0mwiJU/u89asSYK7R7/'
+
+  tasks:
+  - name: Cria Usuario
+    user:
+      name: usuario.teste
+      state: present
+      password: "{{ password }}"
+      update_password: always
+  - name: Adiciona usuario no sudoers
+    shell:
+      cmd: echo 'usuario.teste ALL=(ALL:ALL) ALL' >> /etc/sudoers
